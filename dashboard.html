@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cyber Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ANIMATIONS & DESIGN - NO CODE CHANGED */
+.app {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Sidebar */
+.sidebar {
+    background: linear-gradient(180deg, rgba(10, 20, 40, 0.95), rgba(5, 10, 25, 0.98));
+    border-right: 1px solid rgba(0, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    animation: slideInLeft 0.6s ease-out;
+}
+.sidebar h2 {
+    animation: glowPulse 3s ease-in-out infinite;
+    background: linear-gradient(45deg, #00ffff, #0088ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.sidebar p {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 5px 0;
+    position: relative;
+    overflow: hidden;
+}
+.sidebar p::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: #00ffff;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+.sidebar p:hover {
+    background: rgba(0, 255, 255, 0.08);
+    transform: translateX(5px);
+    color: #00ffff;
+}
+.sidebar p:hover::before {
+    transform: scaleY(1);
+}
+.sidebar p:last-child {
+    margin-top: 40px;
+    border-top: 1px solid rgba(0, 255, 255, 0.1);
+    padding-top: 20px;
+}
+.sidebar p:last-child:hover {
+    color: #ff4444;
+}
+
+/* Main */
+.main {
+    animation: fadeIn 0.8s ease-out 0.2s both;
+}
+.main h1 {
+    background: linear-gradient(135deg, #00ffff, #0066ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+/* Cards */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+.card {
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.4s ease;
+    animation: cardFloat 3s ease-in-out infinite;
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.05), transparent 70%);
+    animation: rotateBg 10s linear infinite;
+}
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: #00ffff;
+    box-shadow: 0 10px 40px rgba(0, 255, 255, 0.15);
+}
+.card:nth-child(1) { animation-delay: 0s; }
+.card:nth-child(2) { animation-delay: 0.3s; }
+.card:nth-child(3) { animation-delay: 0.6s; }
+
+/* Panels */
+.panel {
+    background: rgba(10, 20, 40, 0.6);
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    backdrop-filter: blur(8px);
+    transition: all 0.4s ease;
+    animation: slideUp 0.6s ease-out both;
+}
+.panel:hover {
+    border-color: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 5px 30px rgba(0, 255, 255, 0.05);
+}
+.panel h3 {
+    color: #00ffff;
+    margin-bottom: 12px;
+}
+
+/* Progress bar */
+.bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+#progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ffff, #0066ff);
+    border-radius: 3px;
+    animation: progressPulse 2s ease-in-out infinite;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+@media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+}
+
+/* Inputs & Buttons */
+.panel input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #fff;
+    width: 70%;
+    transition: all 0.3s ease;
+}
+.panel input:focus {
+    border-color: #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    transform: scale(1.02);
+    outline: none;
+}
+.panel button {
+    background: linear-gradient(135deg, #00ccff, #0066ff);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 8px;
+}
+.panel button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 150, 255, 0.3);
+}
+
+/* Live Logs */
+#logs {
+    max-height: 150px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+#logs p {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    animation: logSlide 0.3s ease-out;
+}
+#logs p:nth-child(odd) {
+    color: #00ffff;
+}
+#logs p:nth-child(even) {
+    color: #88ddff;
+}
+
+/* Scan text */
+#scanText {
+    font-family: 'Courier New', monospace;
+    animation: blink 1s step-end infinite;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideInLeft {
+    from { transform: translateX(-100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+@keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.3)); }
+    50% { filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.6)); }
+}
+@keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+@keyframes cardFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+@keyframes rotateBg {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes progressPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+@keyframes logSlide {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Scrollbar styling */
+#logs::-webkit-scrollbar {
+    width: 4px;
+}
+#logs::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+}
+#logs::-webkit-scrollbar-thumb {
+    background: #00ffff;
+    border-radius: 2px;
+}
+
+/* Glitch effect on cards */
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.03), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+.card:hover::after {
+    transform: translateX(100%);
+}
+
+/* Threat level pulse */
+.card:nth-child(3) {
+    animation: threatPulse 2s ease-in-out infinite;
+}
+@keyframes threatPulse {
+    0%, 100% { border-color: rgba(0, 255, 0, 0.3); }
+    50% { border-color: rgba(0, 255, 0, 0.6); }
+}
+
+/* Status icons glow */
+.card:nth-child(1) { text-shadow: 0 0 20px rgba(0, 255, 0, 0.3); }
+.card:nth-child(2) { text-shadow: 0 0 20px rgba(255, 100, 0, 0.3); }
+</style>
+</head>
+
+<body class="dash-body" onload="checkSession(); startScan(); loadInfo(); startLogs();">
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>🛡 CyberSOC</h2>
+
+        <p>📊 Dashboard</p>
+        <p>⚠ Threats</p>
+        <p>📡 Logs</p>
+        <p onclick="logout()">🚪 Logout</p>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <h1>Security Operations Center</h1>
+
+        <!-- CARDS -->
+        <div class="cards">
+            <div class="card">🟢 System Online</div>
+            <div class="card">🔥 Firewall Active</div>
+            <div class="card">⚠ Threat Level: Low</div>
+        </div>
+
+        <!-- FAKE HACK UI -->
+        <div class="panel hack-box">
+            <h3>🧠 Live Security Scan</h3>
+            <p id="scanText">Initializing...</p>
+
+            <div class="bar">
+                <div id="progress"></div>
+            </div>
+        </div>
+
+        <!-- SYSTEM INFO -->
+        <div class="panel">
+            <h3>💻 System Info</h3>
+            <p id="ip"></p>
+            <p id="platform"></p>
+        </div>
+
+        <!-- SQL + XSS SIMULATION -->
+        <div class="grid">
+
+            <div class="panel">
+                <h3>💣 SQL Injection Simulation</h3>
+                <input id="sqlInput" placeholder="Try: ' OR 1=1 --">
+                <button onclick="testSQL()">Test</button>
+                <p id="sqlResult"></p>
+            </div>
+
+            <div class="panel">
+                <h3>⚠ XSS Simulation</h3>
+                <input id="xssInput" placeholder="<script>alert(1)</script>">
+                <button onclick="testXSS()">Test</button>
+                <p id="xssResult"></p>
+            </div>
+
+        </div>
+
+        <!-- LOGS -->
+        <div class="panel">
+            <h3>📡 Live Logs</h3>
+            <div id="logs"></div>
+        </div>
+
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
