@@ -18,3 +18,4 @@ An interactive web-based project focused on cyber safety and secure digital prac
 ## 📌 Purpose
 
 This project demonstrates basic front-end development skills while promoting cyber safety awareness.
+https://ayshaafrinn.github.io/cyber-secure-site/
